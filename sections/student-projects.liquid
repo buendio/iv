@@ -1,0 +1,243 @@
+{%- style -%}
+  .testimonials-{{ section.id }} {
+	background-color: {{ section.settings.test_section_background_color }};
+    color: {{ section.settings.color_text }};
+  }
+}
+{%- endstyle -%}
+
+<div
+  class="testimonials-section testimonials-{{ section.id }}{% if section.settings.color_background == settings.color_body_bg %} testimonials-section--with-divider{% endif %} text-{{ section.settings.align_text }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="testimonials"
+  data-aos>
+  
+  
+	{%- if section.settings.test_section_btl != blank -%}
+		{% assign img_url = section.settings.test_section_btl | image_url: width: 500 %}
+    	<img class="test-cover-tl" src="{{ img_url }}" alt=""/>
+	{%- endif -%}
+    {%- if section.settings.test_section_btr != blank -%}
+		{% assign img_url = section.settings.test_section_btr | image_url: width: 500 %}
+    	<img class="test-cover-tr" src="{{ img_url }}" alt=""/>
+    {%- endif -%}
+    {%- if section.settings.test_section_bbl != blank -%}
+		{% assign img_url = section.settings.test_section_bbl | image_url: width: 500 %}
+    	<img class="test-cover-bl" src="{{ img_url }}" alt=""/>
+    {%- endif -%}
+    {%- if section.settings.test_section_bbr != blank -%}
+		{% assign img_url = section.settings.test_section_bbr | image_url: width: 500 %}
+    	<img class="test-cover-br" src="{{ img_url }}" alt=""/>
+	{%- endif -%}
+  
+  
+  
+  
+  {%- if section.settings.title != blank -%}
+    <div class="page-width">
+      <div class="theme-block">
+        <h2>{{ section.settings.title | escape }}</h2>
+      </div>
+      {%- if section.settings.text != blank -%}
+        <div class="theme-block">
+          <div class="rte">
+        <div class="enlarge-text">{{ section.settings.text }}</div>
+            </div>
+          </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="slideshow-wrapper">
+      <div
+        class="testimonials-slider"
+        id="Testimonials-{{ section.id }}"
+        data-dots="true"
+        data-count="{{ section.blocks.size }}">
+        {%- for block in section.blocks -%}
+          <div
+            class="testimonials-slide testimonials-slide--{{ block.id }}"
+            data-index="{{ forloop.index0 }}"
+            data-aos="row-of-{{ section.blocks.size }}"
+            {{ block.shopify_attributes }}>
+            <div class="grid__item {{ column_width }} student-project_wrap  text-{{ section.settings.align_text }}" {{ block.shopify_attributes }} data-aos="row-of-3">
+        {%- if block.settings.enable_image -%}
+          <div style="{% if section.settings.align_text == 'center' %}margin: 0 auto;{% endif %} max-width: {{ block.settings.image_width }}px;">
+            {%- if block.settings.button_link != blank -%}
+              <a href="{{ block.settings.button_link }}" aria-expanded="false">
+            {%- endif -%}
+            {%- if block.settings.image != blank -%}
+              <div class="image-wrap text-spacing" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image.aspect_ratio }}%;">
+                {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                <img class="lazyload"
+                    data-src="{{ img_url }}"
+                    data-widths="[180, 360, 540, 720, 900, 1080]"
+                    data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+                    data-sizes="auto"
+                    alt="{{ block.settings.image.alt }}">
+              </div>
+            {%- else -%}
+              <div class="image-wrap text-spacing">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+            {%- endif -%}
+            {%- if block.settings.button_link != blank -%}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        {%- if block.settings.title != blank -%}
+          <h3>{{ block.settings.title }}</h3>
+        {%- endif -%}
+        {%- if block.settings.text != blank -%}
+          <div class="rte-setting text-spacing">{{ block.settings.text }}</div>
+        {%- endif -%}
+        {%- if block.settings.button_label != blank -%}
+          <a href="{{ block.settings.button_link }}" class="btn btn--secondary btn--small">
+            {{ block.settings.button_label }}
+          </a>
+        {%- endif -%}
+      </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+  {
+    "name": "Student Projects",
+    "class": "index-section--hero",
+    "max_blocks": 9,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Student Projects"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Sub Heading"
+      },
+      {
+        "type": "select",
+        "id": "align_text",
+        "label": "Text alignment",
+        "default": "center",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Centered"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "round_images",
+        "label": "Circular images",
+        "info": "Requires square images",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "#f9f9f9"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "#1c1d1d"
+      },{
+        "type": "header",
+        "content": "Background Items"
+      },{
+        "type": "color",
+        "id": "test_section_background_color",
+        "label": "Background Color",
+        "default": "#FFFFFF"
+      },{
+        "type": "image_picker",
+        "id": "test_section_btl",
+        "label": "Background Image - Top Left"
+      },{
+        "type": "image_picker",
+        "id": "test_section_btr",
+        "label": "Background Image - Top Right"
+      },{
+        "type": "image_picker",
+        "id": "test_section_bbl",
+        "label": "Background Image - Bottom Left"
+      },{
+        "type": "image_picker",
+        "id": "test_section_bbr",
+        "label": "Background Image - Bottom Right"
+      }
+    ],
+     "blocks": [
+      {
+        "type": "text_block",
+        "name": "Project",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "enable_image",
+            "label": "Show image",
+            "default": true
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "range",
+            "id": "image_width",
+            "label": "Image width",
+            "default": 650,
+            "min": 60,
+            "max": 650,
+            "step": 10,
+            "unit": "px"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text"        
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button label"
+          },
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Student Projects"
+      }
+    ]
+  }
+{% endschema %}
